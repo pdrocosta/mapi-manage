@@ -1,6 +1,7 @@
-const pool = require("../db/pool");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import pool from "../db.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 const login = async (req, res) => {
 
@@ -23,9 +24,14 @@ const login = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid credentials" });
-    }a
+    }
 
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role, empresa: user.empresa }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ 
+        id: user.id, 
+        email: user.email, 
+        role: user.role, 
+        empresa: user.empresa }, 
+        process.env.JWT_SECRET, { expiresIn: "1h" });
 
      res.json({
             token,
@@ -39,7 +45,7 @@ const login = async (req, res) => {
         });
     } catch (err) {
         console.error("Login error:", err);
-        res.status(500).json({ message: "Erro interno do servidor" }); // ✅ catch covers everything
+        res.status(500).json({ message: "Erro interno do servidor" }); 
     }
 }
 
@@ -51,8 +57,10 @@ const me = async (req, res) => {
         );
         res.json(result.rows[0]);
     } catch (err) {
+        console.error("Error fetching user data:", err);
         res.status(500).json({ message: "Erro interno do servidor" });
     }
 };
 
 export { login, me };
+
