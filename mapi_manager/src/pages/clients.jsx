@@ -1,16 +1,24 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import Header from "../components/header";
 import Footer from "../components/footer";
-import { useNavigate } from "react-router";
-import ClientCard from "../Documents/mapi_manage/mapi_manager/src/components/clientCard";
-import { MOCK_CLIENTS } from "../schemas/mock";
+import ClientsFilters from "../components/clients/ClientsFilters";
+import ClientsGrid from "../components/clients/ClientsGrid";
+import ClientModal from "../components/clients/ClientModal";
 
+const MOCK_CLIENTS = [
+  { id: 1, name: "Empresa Alpha", email: "contato@alpha.com.br",   phone: "(11) 99999-0001", city: "São Paulo",      orders: 8,  total: 12400.0, active: true  },
+  { id: 2, name: "Beta Ltda",     email: "admin@betaltda.com.br",   phone: "(21) 98888-0002", city: "Rio de Janeiro", orders: 3,  total: 4350.0,  active: true  },
+  { id: 3, name: "Gamma Corp",    email: "gamma@corp.com.br",       phone: "(31) 97777-0003", city: "Belo Horizonte", orders: 15, total: 31000.0, active: true  },
+  { id: 4, name: "Delta S/A",     email: "financeiro@delta.com.br", phone: "(41) 96666-0004", city: "Curitiba",       orders: 2,  total: 1920.0,  active: false },
+  { id: 5, name: "Epsilon ME",    email: "epsilon@me.com.br",       phone: "(51) 95555-0005", city: "Porto Alegre",   orders: 6,  total: 8700.0,  active: true  },
+];
 
 const Clients = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filterActive, setFilterActive] = useState("all");
-  const [modal, setModal] = useState(null); // client object or null
+  const [selectedClient, setSelectedClient] = useState(null);
 
   const filtered = MOCK_CLIENTS.filter(c => {
     const matchSearch =
@@ -30,7 +38,7 @@ const Clients = () => {
 
       <main style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
 
-        {/* Title */}
+        {/* Page header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32 }}>
           <div>
             <button
@@ -42,151 +50,34 @@ const Clients = () => {
             <h1 style={{ fontSize: 28, fontWeight: 700, color: "#1a1a1a", margin: 0 }}>Clientes</h1>
             <p style={{ color: "#6b6b6b", marginTop: 4, fontSize: 14 }}>{filtered.length} clientes encontrados</p>
           </div>
-          <button
-            style={{
-              background: "#1a1a1a", color: "#fff", border: "none",
-              borderRadius: 10, padding: "10px 20px", fontWeight: 600,
-              fontSize: 14, cursor: "pointer",
-            }}
-          >
+          <button style={{
+            background: "#1a1a1a", color: "#fff", border: "none",
+            borderRadius: 10, padding: "10px 20px",
+            fontWeight: 600, fontSize: 14, cursor: "pointer",
+          }}>
             + Novo cliente
           </button>
         </div>
 
-        {/* Filters */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
-          <input
-            type="text"
-            placeholder="Buscar por nome, e-mail ou cidade..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{
-              flex: 1, minWidth: 220, padding: "10px 14px",
-              border: "1.5px solid #e0deda", borderRadius: 10,
-              fontSize: 14, fontFamily: "inherit", outline: "none",
-              background: "#fff",
-            }}
-          />
-          <select
-            value={filterActive}
-            onChange={e => setFilterActive(e.target.value)}
-            style={{
-              padding: "10px 14px", border: "1.5px solid #e0deda",
-              borderRadius: 10, fontSize: 14, fontFamily: "inherit",
-              background: "#fff", cursor: "pointer", outline: "none",
-            }}
-          >
-            <option value="all">Todos</option>
-            <option value="active">Ativos</option>
-            <option value="inactive">Inativos</option>
-          </select>
-        </div>
+        {/* Components */}
+        <ClientsFilters
+          search={search}
+          onSearch={setSearch}
+          filterActive={filterActive}
+          onFilterActive={setFilterActive}
+        />
 
-        {/* Cards grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-          {filtered.length === 0 ? (
-            <p style={{ color: "#9b9b9b", gridColumn: "1/-1", textAlign: "center", padding: 40 }}>
-              Nenhum cliente encontrado.
-            </p>
-          ) : filtered.map(c => (
-            <div
-              key={c.id}
-              style={{
-                background: "#fff", border: "1px solid #e0deda",
-                borderRadius: 16, padding: 20,
-                transition: "box-shadow 150ms, transform 150ms",
-                cursor: "pointer",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.08)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "none"; }}
-              onClick={() => setModal(c)}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <ClientCard name={c.name} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 15, color: "#1a1a1a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.name}</div>
-                  <div style={{ fontSize: 12, color: "#9b9b9b" }}>{c.city}</div>
-                </div>
-                <span style={{
-                  fontSize: 11, fontWeight: 600, padding: "3px 9px", borderRadius: 20,
-                  background: c.active ? "#e8f8f1" : "#fdecea",
-                  color: c.active ? "#2d9e6b" : "#d94f4f",
-                }}>
-                  {c.active ? "Ativo" : "Inativo"}
-                </span>
-              </div>
+        <ClientsGrid
+          clients={filtered}
+          onClientClick={setSelectedClient}
+        />
 
-              <div style={{ fontSize: 13, color: "#6b6b6b", marginBottom: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                ✉ {c.email}
-              </div>
-              <div style={{ fontSize: 13, color: "#6b6b6b", marginBottom: 16 }}>
-                ☎ {c.phone}
-              </div>
-
-              <div style={{ display: "flex", gap: 8, borderTop: "1px solid #f0efeb", paddingTop: 14 }}>
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: "#1a1a1a" }}>{c.orders}</div>
-                  <div style={{ fontSize: 11, color: "#9b9b9b" }}>Pedidos</div>
-                </div>
-                <div style={{ width: 1, background: "#f0efeb" }} />
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: "#4f6ef7" }}>
-                    {c.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                  </div>
-                  <div style={{ fontSize: 11, color: "#9b9b9b" }}>Total gasto</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </main>
 
-      {/* Modal de detalhes */}
-      {modal && (
-        <div
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.4)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 24 }}
-          onClick={() => setModal(null)}
-        >
-          <div
-            style={{ background: "#fff", borderRadius: 20, padding: 32, width: "100%", maxWidth: 420, boxShadow: "0 20px 60px rgba(0,0,0,.15)" }}
-            onClick={e => e.stopPropagation()}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
-              <ClientCard name={modal.name} />
-              <div>
-                <div style={{ fontWeight: 700, fontSize: 18 }}>{modal.name}</div>
-                <div style={{ fontSize: 13, color: "#9b9b9b" }}>{modal.city}</div>
-              </div>
-            </div>
-            {[
-              ["E-mail", modal.email],
-              ["Telefone", modal.phone],
-              ["Status", modal.active ? "Ativo" : "Inativo"],
-              ["Pedidos", modal.orders],
-              ["Total gasto", modal.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })],
-            ].map(([label, value]) => (
-              <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid #f0efeb", fontSize: 14 }}>
-                <span style={{ color: "#9b9b9b" }}>{label}</span>
-                <span style={{ fontWeight: 500 }}>{value}</span>
-              </div>
-            ))}
-            <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
-              <button
-                onClick={() => setModal(null)}
-                style={{ flex: 1, padding: "10px 0", border: "1px solid #e0deda", borderRadius: 10, background: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 14 }}
-              >
-                Fechar
-              </button>
-              <button
-                onClick={() => navigate("/pedidos")}
-                style={{ flex: 1, padding: "10px 0", border: "none", borderRadius: 10, background: "#1a1a1a", color: "#fff", cursor: "pointer", fontFamily: "inherit", fontSize: 14, fontWeight: 600 }}
-              >
-                Ver pedidos
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ClientModal
+        client={selectedClient}
+        onClose={() => setSelectedClient(null)}
+      />
 
       <Footer />
     </div>

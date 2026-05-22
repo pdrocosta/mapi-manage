@@ -27,7 +27,6 @@ const Orders = () => {
 
       <main style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 24px" }}>
 
-        {/* Page title */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32 }}>
           <div>
             <button
@@ -119,7 +118,7 @@ const Orders = () => {
                   <td style={{ padding: "14px 16px", fontWeight: 600 }}>
                     {o.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                   </td>
-                  <td style={{ padding: "14px 16px" }}><Badge status={o.status} /></td>
+                  <td style={{ padding: "14px 16px" }}><OrderCard status={o.status} /></td>
                   <td style={{ padding: "14px 16px", color: "#9b9b9b", fontSize: 13 }}>
                     {new Date(o.date).toLocaleDateString("pt-BR")}
                   </td>
