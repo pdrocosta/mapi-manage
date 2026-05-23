@@ -7,14 +7,12 @@ import Orders from "../pages/orders";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      <Route path="/"          element={<LoginPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/clients" element={<Clients/>} />
-      <Route path="/orders" element={<Orders/>} />
+      <Route path="/clients"   element={<Clients />} />
+      <Route path="/orders"    element={<Orders />} />
     </Routes>
-
-  )
-}
+  );
+};
 
 export default AppRoutes;
-

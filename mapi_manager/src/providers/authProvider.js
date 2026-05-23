@@ -1,12 +1,29 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+
+        const getUserData = async (token) => {
+        try {
+            const response = await fetch("/api/auth/me", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (response.status === 401) throw new Error("Unauthorized");
+            if (!response.ok) throw new Error("Error fetching user data");
+
+            const userData = await response.json();
+            return userData;
+        } catch (err) {
+                       toast.error(err?.message || 'Error fetching user data');
+        }
+    };
 
     const autoLogin = async (token) => {
         try {
@@ -42,22 +59,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const getUserData = async (token) => {
-        try {
-            const response = await fetch("/api/auth/me", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (response.status === 401) throw new Error("Unauthorized");
-            if (!response.ok) throw new Error("Error fetching user data");
-
-            const userData = await response.json();
-            return userData;
-        } catch (err) {
-                       toast.error(err?.message || 'Error fetching user data');
-        }
-    };
-
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userInfos');
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }) => {
         init(token);
     } else {
         navigate('/login');
-    }});
+    }}, []);
     
 
     return (
