@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import Header from "../components/header";
-import Footer from "../components/footer";
-import OrdersFilters from "../components/orders/OrdersFilters";
-import OrdersTable from "../components/orders/OrdersTable";
-import OrdersSummary from "../components/orders/OrdersSummary";
-import OrderModal from "../components/orders/OrderModal";
-import { useOrder, loading } from "../providers/OrderProvider";
-import { useAuth } from "../providers/AuthProvider";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import OrdersFilters from "../../components/orders/OrdersFilters";
+import OrdersTable from "../src/components/orders/OrdersTable";
+import OrdersSummary from "../../components/orders/OrdersSummary";
+import OrderModal from "../src/components/orders/OrderModal";
+import { useOrder, loading } from "../../src/providers/OrderProvider";
+import { useAuth } from "../../src/providers/AuthProvider";
 import {
   PageWrapper,
   MainContent,
