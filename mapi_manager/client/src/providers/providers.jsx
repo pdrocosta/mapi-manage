@@ -1,15 +1,25 @@
-import { AuthProvider } from "./authProvider";
-import { ClientProvider } from "./clientProvider";
-import { OrderProvider } from "./orderProvider";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './index.css';
+import App from './App.jsx';
+import { AuthProvider }   from './providers/AuthProvider';
+import { ClientProvider } from './providers/ClientProvider';
+import { OrderProvider }  from './providers/OrderProvider';
 
-const Providers = ({ children }) => (
-  <AuthProvider>
-    <ClientProvider>
-      <OrderProvider>
-        {children}
-      </OrderProvider>
-    </ClientProvider>
-  </AuthProvider>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <ClientProvider>
+          <OrderProvider>
+            <App />
+            <ToastContainer position="top-right" autoClose={3000} />
+          </OrderProvider>
+        </ClientProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </StrictMode>
 );
-
-export default Providers;

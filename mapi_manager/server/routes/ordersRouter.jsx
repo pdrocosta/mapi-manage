@@ -6,7 +6,7 @@ import {
   updateOrder,
   deleteOrder,
 } from "../controllers/ordersController.js";
-import { authMiddleware } from "../middleware/authMiddleware.js";
+import { authMiddleware } from "../../client/middleware/authMiddleware.js";
 const ordersRouter = Router();
 
 ordersRouter.get("/",      authMiddleware, getOrders);

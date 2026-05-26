@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-export const theme = {
+const theme = {
   colors: {
     bg:           '#f7f6f2',
     surface:      '#ffffff',
@@ -141,3 +141,6 @@ export const GlobalStyles = createGlobalStyle`
     to   { opacity: 1; }
   }
 `;
+
+
+export default theme;

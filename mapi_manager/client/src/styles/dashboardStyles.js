@@ -1,4 +1,3 @@
-// styles/dashboard.styles.js
 import styled from 'styled-components';
 import { Card } from './shared';
 
@@ -7,7 +6,6 @@ export const AppLayout = styled.div`
   min-height: 100vh;
 `;
 
-// ── Sidebar ───────────────────────────────────────
 
 export const Sidebar = styled.aside`
   width: ${({ theme }) => theme.layout.sidebarWidth};
@@ -91,7 +89,6 @@ export const SidebarLogout = styled.button`
   }
 `;
 
-// ── App main ──────────────────────────────────────
 
 export const AppMain = styled.div`
   flex: 1;
@@ -100,7 +97,6 @@ export const AppMain = styled.div`
   min-width: 0;
 `;
 
-// ── Header ────────────────────────────────────────
 
 export const AppHeader = styled.header`
   height: ${({ theme }) => theme.layout.headerHeight};
@@ -140,8 +136,6 @@ export const UserName = styled.span`
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
-// ── Page content ──────────────────────────────────
-
 export const PageContent = styled.div`
   padding: ${({ theme }) => theme.space[8]};
   flex: 1;
@@ -151,8 +145,6 @@ export const PageContent = styled.div`
     padding: ${({ theme }) => `${theme.space[6]} ${theme.space[4]}`};
   }
 `;
-
-// ── Stats grid ────────────────────────────────────
 
 export const StatsGrid = styled.div`
   display: grid;

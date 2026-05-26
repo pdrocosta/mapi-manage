@@ -1,8 +1,6 @@
-// styles/clients.styles.js
 import styled from 'styled-components';
 import { Card } from './shared';
 
-// ── Grid ──────────────────────────────────────────
 
 export const ClientsGrid = styled.div`
   display: grid;
@@ -18,7 +16,6 @@ export const EmptyMessage = styled.p`
   grid-column: 1 / -1;
 `;
 
-// ── Client Card ───────────────────────────────────
 
 export const ClientCardWrapper = styled(Card)`
   cursor: pointer;
@@ -103,7 +100,6 @@ export const StatLabel = styled.div`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
-// ── Avatar ────────────────────────────────────────
 
 export const AvatarCircle = styled.div`
   width: ${({ size }) => size || 38}px;
@@ -119,7 +115,6 @@ export const AvatarCircle = styled.div`
   flex-shrink: 0;
 `;
 
-// ── Client Modal ──────────────────────────────────
 
 export const ModalHeader = styled.div`
   display: flex;

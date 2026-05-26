@@ -1,4 +1,3 @@
-// styles/auth.styles.js
 import styled from 'styled-components';
 
 export const AuthScreen = styled.div`

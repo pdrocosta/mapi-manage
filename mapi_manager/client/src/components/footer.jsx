@@ -1,4 +1,4 @@
-const footer = () => {
+const Footer = () => {
   return (
     <footer>
         <p>© 2026 Mapi Manager. All rights reserved.</p>
@@ -6,4 +6,4 @@ const footer = () => {
     )   
 }
 
-export default footer;
+export default Footer;

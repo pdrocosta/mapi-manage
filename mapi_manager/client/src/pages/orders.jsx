@@ -29,10 +29,10 @@ const Orders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
-    if (user?.companyId) {
-      getOrders(user.companyId);
+    if (user?.empresa) {
+      getOrders(user.empresa);
     }
-  }, [user?.companyId]);
+  }, [user?.empresa]);
 
   const filtered = orders.filter(o => {
     const matchSearch =

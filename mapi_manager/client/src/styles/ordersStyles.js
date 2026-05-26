@@ -1,8 +1,6 @@
-// styles/orders.styles.js
 import styled from 'styled-components';
 import { Card, Select, Input } from './shared';
 
-// ── Filters ───────────────────────────────────────
 
 export const FiltersRow = styled.div`
   display: flex;
@@ -18,7 +16,6 @@ export const SearchInput = styled(Input)`
 
 export const StatusSelect = styled(Select)``;
 
-// ── Table ─────────────────────────────────────────
 
 export const TableWrapper = styled.div`
   background: ${({ theme }) => theme.colors.surface};
@@ -96,7 +93,6 @@ export const ViewButton = styled.button`
   }
 `;
 
-// ── Status Badge ──────────────────────────────────
 
 export const Badge = styled.span`
   padding: 3px 10px;
@@ -117,7 +113,6 @@ export const Badge = styled.span`
   }}
 `;
 
-// ── Summary cards ─────────────────────────────────
 
 export const SummaryGrid = styled.div`
   display: flex;

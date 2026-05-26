@@ -1,50 +1,34 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { loginFormSchema } from "./loginFormSchema";
-import { useNavigate } from "react-router";
-import { useState } from "react";
-import login from "../providers/providers";
+import { loginFormSchema } from "../../schemas/loginFormSchema";
+import { useAuth } from '../../providers/AuthProvider';
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState(null);
+  const { login, loading } = useAuth(); // ✅ destructured
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginFormSchema)
   });
 
-  const loginInput = async (data) => {
-    setIsLoading(true);
-    try {
-     await login(data);
-      navigate("/dashboard");
-      setLoginError(null)
-    } catch (err) {
-      setLoginError("Falha ao realizar login. Tente novamente.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit(loginInput)} noValidate>
+    <form onSubmit={handleSubmit(login)} noValidate>
       <div>
-        <div>
-          <input {...register("email")} placeholder="Email" type="email" />
-          {errors.email && <p role="alert">{errors.email.message}</p>}
-          <input {...register("password")} type="password" placeholder="Password" />
-          {errors.password && <p role="alert" >{errors.password.message}</p>}
-          <input {...register("empresa")} placeholder="Empresa" />
-          {errors.empresa && <p role="alert"> {errors.empresa.message}</p>}
-        </div>
-        <div>
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? "Entrando..." : "Login"}
+        <input {...register("email")} type="email" placeholder="Email"
+          autoComplete="email" aria-invalid={!!errors.email} />
+        {errors.email && <p role="alert">{errors.email.message}</p>}
 
-          </button>
-        </div>
+        <input {...register("password")} type="password" placeholder="Senha"
+          autoComplete="current-password" aria-invalid={!!errors.password} />
+        {errors.password && <p role="alert">{errors.password.message}</p>}
+
+        <input {...register("empresa")} type="text" placeholder="Empresa"
+          aria-invalid={!!errors.empresa} />
+        {errors.empresa && <p role="alert">{errors.empresa.message}</p>}
       </div>
+
+      <button type="submit" disabled={loading}>
+        {loading ? "Entrando..." : "Login"}
+      </button>
     </form>
   );
 };
